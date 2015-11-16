@@ -6,15 +6,10 @@
  * Date: 05.11.15
  * Time: 12:07
  */
-require_once("Algorithm.php");
-abstract class Fano implements  Algorithm
+
+abstract class Fano 
 {
-    private $codeArray=array();
-    public function run(Task $task){
-        $codeArray=$task->getData();
-        $checkFano=$this->checkArray($codeArray);
-        return $checkFano;
-    }
+    private $codeArray=array();   
     public function checkArray($codeArray){
         /*
          * функция проверяет массив кодов на соответствие условию Фано

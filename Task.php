@@ -1,4 +1,4 @@
 <?php
 	abstract class Task{
-		abstract public function getData();
+		abstract public function solve();
 	}
