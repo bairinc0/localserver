@@ -16,11 +16,4 @@
 	if ($result){
 		print_r($result);
 	}
-	
-	/*require_once("CodeGenerator.php");
-	$cd=new CodeGenerator();
-	$cd->addSymbol('A');
-$cd->addSymbol('B');
-$cd->addSymbol('A');
-print_r($cd);*/
 ?>
