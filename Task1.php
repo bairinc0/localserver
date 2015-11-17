@@ -12,28 +12,65 @@
 require_once("Task.php");
 require_once("ReverseFano.php");
 require_once("DirectFano.php");
+require_once("EvaluateCodeLength.php");
 class Task1 extends Task{
-	private $checkFano;
-	public function Task1(Fano $checkFano){
-		$this->checkFano=$checkFano;
+	private $checkFano;//Алгоритм проверки - прямой/обратный
+	private $variants=array();// массив вариантов кодировок
+	private $letterCount=array();//массив количества букв
+	public $method="DirectFano";
+	public function Task1($method="DirectFano"){
+		if ($method=="DirectFano"){
+			$this->checkFano=new DirectFano();
+		}
+		else{
+			$this->method="ReverseFano";
+			$this->checkFano=new ReverseFano();
+		}
 	}
-	private $variants=array();// массив вариантов
 	public function setData($variants){
 		array_push($this->variants, $variants);
+	}
+	public function setLetters($letterCount){
+		$this->letterCount=$letterCount;
+	}
+	public function getLetters(){
+		return $this->letterCount;
 	}
 	public function getData(){
 		return $this->variants;
 	}
 	public function solve(){        
-        $result=array();
-        foreach ($this->variants as $codeArray){
-            $checkFano=$this->checkFano->checkArray($codeArray);            
-            if (!$checkFano){
-                array_push($result,$codeArray);
-            }
-        }
-        return $result;
+        $result=$this->findAllVariants();
+		if(count($result)==0){
+			return false;
+		}
+		else if (count($result)==1){
+			return $result;
+		}
+		else{
+			$estimator=new EvaluateCodeLength();
+			$minSum=$estimator->evaluate($result[0],$this->letterCount);
+			$resultMin=$result[0];
+			for($i=1;$i<count($result);$i++){
+				$currSum=$estimator->evaluate($result[$i],$this->letterCount);
+				if ($minSum>$currSum){
+					$resultMin=$result[$i];
+					$minSum=$currSum;
+				}
+			}
+			return $resultMin;
+		}
     }
+	public function findAllVariants(){
+		$result=array();
+		foreach ($this->variants as $codeArray){
+			$checkFano=$this->checkFano->checkArray($codeArray);
+			if (!$checkFano){
+				array_push($result,$codeArray);
+			}
+		}
+		return $result;
+	}
 }
 
 	

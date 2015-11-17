@@ -10,8 +10,10 @@
 		3) А:1, Б:01, В:011, Г:001
 		4) А:00, Б:01, В:10, Г:11
 	*/
+	header('Content-Type: text/html; charset=utf-8');
 	require_once("Task1.php");
-	$task1=new Task1(new DirectFano());
+	$task1=new Task1();
+	//Задаём варианты задачи
 	// 1-st set
 	$codeArray=array();
 	array_push($codeArray,array("А"=>"0"));
@@ -40,15 +42,14 @@
 	array_push($codeArray,array("В"=>"10"));
 	array_push($codeArray,array("Г"=>"11"));
 	$task1->setData($codeArray);
-	//print_r($task1);
-	$result_task1=$task1->solve();
-	if (count($result_task1)==0){
-		echo "Ни один вариант не подходит";
-	}
-	else{
-		echo "Подходят варианты:<br>";
-		foreach ($result_task1 as $result){
-			print_r($result);
-			echo "<br>";
-		}
-	}
+	//Задаём условия
+	$codeArray=array("А"=>16,"Б"=>8,"Г"=>4,"В"=>4);
+	$task1->setLetters($codeArray);
+	//Вывод
+	require_once("Task1Printer.php");
+	require_once("EchoDisplay.php");
+    $printer=new Task1Printer($task1,new EchoDisplay());
+	//Выводим условие
+	$printer->showConditions();
+	//Выводим ответ
+	$printer->showAnswer();
